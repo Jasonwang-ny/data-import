@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "data manip"
 author: "Jason Wang"
 date: "9/19/2019"
 output: github_document
@@ -12,8 +12,6 @@ library(knitr)
 
 knitr::opts_chunk$set(echo = TRUE)
 
-
-options(tibble.print_min = 3)
 
 litters_data = read_csv("../data/FAS_litters.csv",
   col_types = "ccddiiii")
@@ -29,8 +27,31 @@ pups_data = janitor::clean_names(pups_data)
 
 
 # SELECT DATA from exist file
-```{r  }
-select(litters_data, group, litter_number, gd0_weight, pups_born_alive)
+```{r, echo=FALSE}
+
+data_selection <- select(litters_data, litter_number, group, gd0_weight:gd_of_birth) %>% 
+  filter(!is.na(gd0_weight)) %>% 
+  mutate(weight_gain = gd18_weight - gd0_weight) %>% 
+  filter(!is.na(weight_gain))
+
+
+```
+
+## filtering
+```{r}
+
+
+```
+
+## mutate
+```{r}
+
+
+```
+
+
+## Arrange
+```{r}
 
 
 ```
