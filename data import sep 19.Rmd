@@ -4,6 +4,7 @@ author: "Jason Wang"
 date: "9/19/2019"
 output: github_document
 ---
+below is my data import
 
 ```{r setup, include=FALSE}
 library(tidyverse)
@@ -26,10 +27,10 @@ pups_data = janitor::clean_names(pups_data)
 ```
 
 
-below is my data import
+
 # SELECT DATA from exist file
 ```{r  }
-
+select(litters_data, group, litter_number, gd0_weight, pups_born_alive)
 
 
 ```
