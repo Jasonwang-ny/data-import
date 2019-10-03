@@ -1,0 +1,98 @@
+---
+title: "viz_and_eda"
+author: "Jason Wang"
+date: "9/26/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+install.packages("ggplot2")
+install.packages("ggridges")
+library(ggridges)
+
+```
+
+```{r}
+weather_df = 
+  rnoaa::meteo_pull_monitors(c("USW00094728", "USC00519397", "USS0023B17S"),
+                      var = c("PRCP", "TMIN", "TMAX"), 
+                      date_min = "2017-01-01",
+                      date_max = "2017-12-31") %>%
+  mutate(
+    name = recode(id, USW00094728 = "CentralPark_NY", 
+                      USC00519397 = "Waikiki_HA",
+                      USS0023B17S = "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10)
+
+ weather_df_data_set = select(weather_df, name, id, everything())
+weather_df_data_set
+
+ggplot(weather_df_data_set, aes(x = tmin, y = tmax)) + 
+  geom_point()
+
+```
+
+
+```{r, }
+plot_weather = 
+  weather_df_data_set %>%
+  ggplot(aes(x = tmin, y = tmax)) 
+
+plot_weather + geom_point()
+
+```
+
+
+```{r}
+ggplot(weather_df_data_set, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name))
+
+```
+
+
+why do "aes" position matter?
+
+```{r}
+ggplot(weather_df_data_set, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name)) +
+  geom_smooth(se = FALSE)
+
+ggplot(weather_df_data_set, aes(x = tmin, y = tmax, color = name)) + 
+  geom_point() +
+  geom_smooth(se = FALSE)
+
+```
+
+facet!
+
+
+```{r}
+ggplot(weather_df_data_set, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name)) +
+  geom_smooth(se = FALSE)
+
+ggplot(weather_df_data_set, aes(x = tmin, y = tmax, color = name)) + 
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_grid(~name)
+
+```
+
+```{r}
+weather_df_data_set %>% 
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+
+weather_df_data_set %>% 
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point(aes(size = prcp)) +
+  geom_smooth(se = FALSE)
+
+```
+
+### some extra stuff
+
